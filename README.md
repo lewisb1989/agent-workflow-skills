@@ -40,30 +40,53 @@ The skills:
 
 ## Adopt it
 
-1. Copy the files into your repository, for example under `agents/`:
+Run these from the root of the repository you want to set up.
+
+1. Copy the files under `agents/`:
 
    ```bash
-   git clone <this-repo-url> /tmp/agent-workflow-skills
+   git clone https://github.com/lewisb1989/agent-workflow-skills /tmp/agent-workflow-skills
    mkdir -p agents
    cp -R /tmp/agent-workflow-skills/{AGENTS.md,CUSTOMISE.md,rules,skills} agents/
    ```
 
-2. Point your agent at the index. Its links are relative to `agents/`, so don't symlink it to the
-   repository root; add one line to your existing root `AGENTS.md` / `CLAUDE.md` that sends the
-   agent to `agents/AGENTS.md`.
+2. Let Claude Code discover the skills:
 
-3. For Claude Code skill discovery, link the skills directory:
-   `mkdir -p .claude && ln -s ../agents/skills .claude/skills`.
+   ```bash
+   mkdir -p .claude && ln -s ../agents/skills .claude/skills
+   ```
 
-4. Fill in [CUSTOMISE.md](CUSTOMISE.md): default branch, ticket pattern, issue tracker, CI checks,
-   reviewer models, environments, and the rest.
+3. Point your agent at the index. Its links are relative to `agents/`, so don't symlink it to the
+   repository root. Add a line like this to your root `CLAUDE.md` or `AGENTS.md`, creating the file
+   if there isn't one:
 
-5. Gitignore the review run directory (`REVIEW_RUN_DIR`, `.agent-runs/` by default).
+   ```markdown
+   Before any work, read `agents/AGENTS.md` and load the rules and skills it lists when their load
+   hint matches. Project settings are in `agents/CUSTOMISE.md`.
+   ```
 
-6. Fill in the `## Structure` section of `AGENTS.md` with your repository's top-level layout.
+4. Fill in `agents/CUSTOMISE.md`: default branch, ticket pattern, issue tracker, `gh` command,
+   required CI checks, reviewer models, environments, and the rest.
+
+5. Fill in the `## Structure` section of `agents/AGENTS.md` with your repository's top-level layout.
+
+6. Gitignore the review run directory (`REVIEW_RUN_DIR`, `.agent-runs/` by default).
 
 All links inside the files are relative, so the set works from any directory as long as
 `AGENTS.md`, `CUSTOMISE.md`, `rules/`, and `skills/` stay together.
+
+### Keeping up with updates
+
+The copy above is yours to edit and won't change when this repository does. To pull updates later,
+fork this repository, fill in `CUSTOMISE.md` and `## Structure` in your fork, and add the fork as a
+submodule instead of copying:
+
+```bash
+git submodule add https://github.com/<you>/agent-workflow-skills agents
+mkdir -p .claude && ln -s ../agents/skills .claude/skills
+```
+
+Then follow steps 3 and 6, and merge this repository into your fork when you want its changes.
 
 ## Customise it
 
